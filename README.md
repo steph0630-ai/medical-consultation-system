@@ -1,10 +1,14 @@
-# Medical Consultation Rebuild
+# 智能医疗咨询系统
 
-从零重写智能医疗咨询系统。原项目仅作为行为与实现参考。
+基于 FastAPI 和 Vue 的医疗咨询、预约与诊疗流程系统。
 
-## 第一阶段
+## 后端启动
 
-- 患者注册
-- 患者登录
-- Token 鉴权
+```powershell
+cd Backend
+python -m venv .venv
+.\.venv\Scripts\pip install -r requirements.txt
+.\.venv\Scripts\uvicorn app.main:app --reload --port 8001
+```
 
+健康检查：`http://localhost:8001/api/v1/config/health`
