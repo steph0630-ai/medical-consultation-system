@@ -8,7 +8,14 @@
 cd Backend
 python -m venv .venv
 .\.venv\Scripts\pip install -r requirements.txt
+docker compose up -d
 .\.venv\Scripts\uvicorn app.main:app --reload --port 8001
 ```
 
 健康检查：`http://localhost:8001/api/v1/config/health`
+
+患者接口：
+
+- `POST /api/v1/auth/register`
+- `POST /api/v1/auth/login`
+- `GET /api/v1/users/me`
