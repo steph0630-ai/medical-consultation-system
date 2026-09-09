@@ -2,17 +2,24 @@
 
 基于 FastAPI 和 Vue 的医疗咨询、预约与诊疗流程系统。
 
-## 后端启动
+## 一键启动
 
 ```powershell
 cd Backend
-python -m venv .venv
-.\.venv\Scripts\pip install -r requirements.txt
-docker compose up -d
-.\.venv\Scripts\uvicorn app.main:app --reload --port 8001
+docker compose up -d --build
 ```
 
+患者端：`http://localhost:3001`
+
+接口文档：`http://localhost:8001/docs`
+
 健康检查：`http://localhost:8001/api/v1/config/health`
+
+停止服务：
+
+```powershell
+docker compose down
+```
 
 患者接口：
 
@@ -20,7 +27,7 @@ docker compose up -d
 - `POST /api/v1/auth/login`
 - `GET /api/v1/users/me`
 
-## 患者端启动
+## 本地开发患者端
 
 ```powershell
 cd medical-client

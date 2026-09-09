@@ -17,5 +17,30 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  backend:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/app
+      SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
+      ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    ports:
+      - "8001:8001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/v1/config/health')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  frontend:
+    build: ../medical-client
+    ports:
+      - "3001:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
 volumes:
   postgres_data:
