@@ -19,3 +19,13 @@ docker compose up -d
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
 - `GET /api/v1/users/me`
+
+## 患者端启动
+
+```powershell
+cd medical-client
+npm install
+npm run dev
+```
+
+访问：`http://localhost:3001`
