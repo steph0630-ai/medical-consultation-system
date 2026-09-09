@@ -26,6 +26,7 @@ docker compose down
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
 - `GET /api/v1/users/me`
+- `GET /api/v1/departments`
 
 ## 本地开发患者端
 

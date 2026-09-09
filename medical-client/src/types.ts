@@ -26,3 +26,17 @@ export interface ApiResponse<T> {
   message: string
   data: T
 }
+
+export interface Department {
+  id: number
+  name: string
+  description: string | null
+  created_at: string
+}
+
+export interface Page<T> {
+  items: T[]
+  total: number
+  page: number
+  per_page: number
+}

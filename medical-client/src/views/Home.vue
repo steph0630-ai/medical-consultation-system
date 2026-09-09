@@ -3,7 +3,10 @@
     <section>
       <h1>欢迎，{{ currentUser?.last_name }}{{ currentUser?.first_name }}</h1>
       <p>{{ currentUser?.email }}</p>
-      <el-button @click="handleLogout">退出登录</el-button>
+      <div class="actions">
+        <el-button type="primary" @click="router.push('/departments')">预约挂号</el-button>
+        <el-button @click="handleLogout">退出登录</el-button>
+      </div>
     </section>
   </main>
 </template>
@@ -33,5 +36,9 @@ section {
   border-radius: 12px;
   background: white;
   box-shadow: 0 8px 32px rgb(0 0 0 / 8%);
+}
+
+.actions {
+  margin-top: 24px;
 }
 </style>
