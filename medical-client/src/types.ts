@@ -40,3 +40,14 @@ export interface Page<T> {
   page: number
   per_page: number
 }
+
+export interface Doctor {
+  id: number
+  department_id: number
+  department_name: string
+  first_name: string
+  last_name: string
+  title: string | null
+  introduction: string | null
+  created_at: string
+}
