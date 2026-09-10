@@ -51,3 +51,23 @@ export interface Doctor {
   introduction: string | null
   created_at: string
 }
+
+export type AppointmentStatus = 'pending' | 'confirmed' | 'waiting_exam' | 'completed' | 'cancelled'
+
+export interface Appointment {
+  id: number
+  patient_id: number
+  doctor_id: number
+  department_id: number
+  doctor_name: string
+  department_name: string
+  appointment_time: string
+  status: AppointmentStatus
+  created_at: string
+}
+
+export interface AppointmentCreate {
+  doctor_id: number
+  department_id: number
+  appointment_time: string
+}

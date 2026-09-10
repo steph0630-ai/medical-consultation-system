@@ -3,7 +3,7 @@
     <header>
       <div>
         <p>预约挂号</p>
-        <h1>{{ selectedDepartment ? '选择医生' : '选择科室' }}</h1>
+        <h1>{{ selectedDoctor ? '选择就诊时间' : selectedDepartment ? '选择医生' : '选择科室' }}</h1>
       </div>
       <el-button @click="$router.push('/')">返回首页</el-button>
     </header>
@@ -22,10 +22,10 @@
       <el-empty v-if="!loading && !departments.length" description="暂无科室" />
     </section>
 
-    <section v-else>
+    <section v-else-if="!selectedDoctor">
       <div class="selection-bar">
         <span>已选科室：<strong>{{ selectedDepartment.name }}</strong></span>
-        <el-button link type="primary" @click="selectedDepartment = null">重新选择</el-button>
+        <el-button link type="primary" @click="resetDepartment">重新选择</el-button>
       </div>
       <div v-loading="loading" class="doctor-list">
         <div
@@ -44,12 +44,32 @@
         <el-empty v-if="!loading && !doctors.length" description="该科室暂无医生" />
       </div>
     </section>
+
+    <section v-else class="confirm-card">
+      <dl>
+        <div><dt>科室</dt><dd>{{ selectedDepartment.name }}</dd></div>
+        <div><dt>医生</dt><dd>{{ selectedDoctor.last_name }}{{ selectedDoctor.first_name }} · {{ selectedDoctor.title }}</dd></div>
+      </dl>
+      <label for="appointment-time">就诊时间</label>
+      <input
+        id="appointment-time"
+        v-model="appointmentTime"
+        type="datetime-local"
+        :min="minimumTime"
+      />
+      <div class="confirm-actions">
+        <el-button @click="selectedDoctor = null">上一步</el-button>
+        <el-button type="primary" :loading="submitting" @click="submitAppointment">提交预约</el-button>
+      </div>
+    </section>
   </main>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
+import { createAppointment } from '../api/appointments'
 import { listDepartments } from '../api/departments'
 import { listDoctors } from '../api/doctors'
 import type { Department, Doctor } from '../types'
@@ -57,7 +77,14 @@ import type { Department, Doctor } from '../types'
 const departments = ref<Department[]>([])
 const doctors = ref<Doctor[]>([])
 const selectedDepartment = ref<Department | null>(null)
+const selectedDoctor = ref<Doctor | null>(null)
 const loading = ref(false)
+const submitting = ref(false)
+const appointmentTime = ref('')
+const minimumTime = new Date(Date.now() - new Date().getTimezoneOffset() * 60_000)
+  .toISOString()
+  .slice(0, 16)
+const router = useRouter()
 
 onMounted(async () => {
   loading.value = true
@@ -79,7 +106,34 @@ async function selectDepartment(department: Department) {
 }
 
 function selectDoctor(doctor: Doctor) {
-  ElMessage.info(`已选择${doctor.last_name}${doctor.first_name}医生，下一步将选择时间`)
+  selectedDoctor.value = doctor
+}
+
+function resetDepartment() {
+  selectedDepartment.value = null
+  selectedDoctor.value = null
+  doctors.value = []
+}
+
+async function submitAppointment() {
+  if (!selectedDepartment.value || !selectedDoctor.value || !appointmentTime.value) {
+    return ElMessage.warning('请选择就诊时间')
+  }
+  const time = new Date(appointmentTime.value)
+  if (time <= new Date()) return ElMessage.warning('请选择未来时间')
+
+  submitting.value = true
+  try {
+    await createAppointment({
+      department_id: selectedDepartment.value.id,
+      doctor_id: selectedDoctor.value.id,
+      appointment_time: time.toISOString(),
+    })
+    ElMessage.success('预约成功')
+    await router.push('/appointments')
+  } finally {
+    submitting.value = false
+  }
 }
 </script>
 
@@ -203,6 +257,57 @@ h1 {
 .doctor-info small {
   margin: 4px 0;
   color: #409eff;
+}
+
+.confirm-card {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 28px;
+  border-radius: 12px;
+  background: white;
+}
+
+dl {
+  margin: 0 0 24px;
+}
+
+dl div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  padding: 12px 0;
+  border-bottom: 1px solid #ebeef5;
+}
+
+dt {
+  color: #909399;
+}
+
+dd {
+  margin: 0;
+}
+
+label,
+input {
+  display: block;
+}
+
+label {
+  margin-bottom: 8px;
+}
+
+input {
+  width: 100%;
+  padding: 10px 12px;
+  color: #303133;
+  border: 1px solid #dcdfe6;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
 }
 
 @media (max-width: 720px) {

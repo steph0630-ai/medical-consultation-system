@@ -5,6 +5,7 @@
       <p>{{ currentUser?.email }}</p>
       <div class="actions">
         <el-button type="primary" @click="router.push('/departments')">预约挂号</el-button>
+        <el-button @click="router.push('/appointments')">我的预约</el-button>
         <el-button @click="handleLogout">退出登录</el-button>
       </div>
     </section>

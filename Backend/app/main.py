@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlalchemy import func, select
 
+from app.api.appointments import router as appointment_router
 from app.api.auth import router as auth_router
 from app.api.departments import router as department_router
 from app.api.doctors import router as doctor_router
@@ -63,6 +64,7 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="智能医疗咨询系统", lifespan=lifespan)
+app.include_router(appointment_router, prefix="/api/v1/appointments", tags=["appointments"])
 app.include_router(auth_router, prefix="/api/v1", tags=["client-auth"])
 app.include_router(department_router, prefix="/api/v1/departments", tags=["departments"])
 app.include_router(doctor_router, prefix="/api/v1/doctors", tags=["doctors"])
