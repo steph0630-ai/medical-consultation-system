@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { type AxiosResponse } from 'axios'
 import { ElMessage } from 'element-plus'
 import type { ApiResponse } from '../types'
 
@@ -26,7 +26,7 @@ request.interceptors.request.use((config) => {
 })
 
 request.interceptors.response.use(
-  (response) => (response.data as ApiResponse<unknown>).data,
+  (response) => response,
   (error) => {
     const status = error.response?.status
     const message = error.response?.data?.message ?? error.response?.data?.detail ?? '请求失败'
@@ -35,5 +35,9 @@ request.interceptors.response.use(
     return Promise.reject(error)
   },
 )
+
+export async function unwrap<T>(response: Promise<AxiosResponse<ApiResponse<T>>>): Promise<T> {
+  return (await response).data.data
+}
 
 export default request

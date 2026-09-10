@@ -1,10 +1,12 @@
-import request from '../utils/request'
+import request, { unwrap } from '../utils/request'
+import type { ApiResponse } from '../types'
 import type { LoginRequest, RegisterRequest, TokenResponse, User } from '../types'
 
 export const register = (data: RegisterRequest): Promise<{ user_id: number; email: string }> =>
-  request.post<unknown, { user_id: number; email: string }>('/auth/register', data)
+  unwrap(request.post<ApiResponse<{ user_id: number; email: string }>>('/auth/register', data))
 
 export const login = (data: LoginRequest): Promise<TokenResponse> =>
-  request.post<unknown, TokenResponse>('/auth/login', data)
+  unwrap(request.post<ApiResponse<TokenResponse>>('/auth/login', data))
 
-export const getMyProfile = (): Promise<User> => request.get<unknown, User>('/users/me')
+export const getMyProfile = (): Promise<User> =>
+  unwrap(request.get<ApiResponse<User>>('/users/me'))
