@@ -1,15 +1,11 @@
-from datetime import datetime
+from sqlalchemy import Column, Integer, String, Text
 
-from sqlalchemy import DateTime, String, Text, func
-from sqlalchemy.orm import Mapped, mapped_column
-
-from app.db import Base
+from app.models.base import BaseModel
 
 
-class Department(Base):
+class Department(BaseModel):
     __tablename__ = "departments"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(100), unique=True, index=True)
-    description: Mapped[str | None] = mapped_column(Text)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    name = Column(String(100), unique=True, nullable=False, index=True)
+    description = Column(Text, nullable=True)

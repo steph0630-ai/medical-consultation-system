@@ -1,43 +1,69 @@
-import axios, { type AxiosResponse } from 'axios'
+import axios, { type AxiosInstance, type InternalAxiosRequestConfig } from 'axios'
 import { ElMessage } from 'element-plus'
-import type { ApiResponse } from '../types'
+import type { ApiResponse } from '../types/api'
 
-const ACCESS_TOKEN_KEY = 'client_access_token'
+const TOKEN_KEY = 'client_access_token'
 const REFRESH_TOKEN_KEY = 'client_refresh_token'
 
-export const getToken = () => localStorage.getItem(ACCESS_TOKEN_KEY)
-
-export function setTokens(accessToken: string, refreshToken: string) {
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
-  localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken)
+export function getToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY)
 }
 
-export function clearTokens() {
-  localStorage.removeItem(ACCESS_TOKEN_KEY)
+export function setToken(token: string): void {
+  localStorage.setItem(TOKEN_KEY, token)
+}
+
+export function getRefreshToken(): string | null {
+  return localStorage.getItem(REFRESH_TOKEN_KEY)
+}
+
+export function setRefreshToken(token: string): void {
+  localStorage.setItem(REFRESH_TOKEN_KEY, token)
+}
+
+export function clearToken(): void {
+  localStorage.removeItem(TOKEN_KEY)
   localStorage.removeItem(REFRESH_TOKEN_KEY)
 }
 
-const request = axios.create({ baseURL: '/api/v1', timeout: 15_000 })
+const request: AxiosInstance = axios.create({
+  baseURL: '/api/v1',
+  timeout: 60000,
+})
 
-request.interceptors.request.use((config) => {
+request.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = getToken()
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 })
 
+const AUTH_FAILURE_MESSAGES = [
+  'Invalid authentication credentials',
+  'Inactive user',
+  'Not authenticated',
+]
+
+function isAuthFailure(status?: number, message?: string): boolean {
+  if (status === 401) return true
+  if (status !== 403) return false
+  return AUTH_FAILURE_MESSAGES.some((item) => message?.includes(item))
+}
+
 request.interceptors.response.use(
-  (response) => response,
+  (response) => (response.data as ApiResponse).data,
   (error) => {
-    const status = error.response?.status
-    const message = error.response?.data?.message ?? error.response?.data?.detail ?? '请求失败'
+    const message = error?.response?.data?.message || error.message || '请求失败'
     ElMessage.error(message)
-    if (status === 401 || status === 403) clearTokens()
+    if (isAuthFailure(error?.response?.status, error?.response?.data?.message)) {
+      clearToken()
+      if (window.location.pathname !== '/login') {
+        window.location.href = '/login'
+      }
+    }
     return Promise.reject(error)
   },
 )
-
-export async function unwrap<T>(response: Promise<AxiosResponse<ApiResponse<T>>>): Promise<T> {
-  return (await response).data.data
-}
 
 export default request

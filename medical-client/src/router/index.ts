@@ -5,18 +5,40 @@ import { getToken } from '../utils/request'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/login', component: () => import('../views/Login.vue') },
-    { path: '/', component: () => import('../views/Home.vue') },
-    { path: '/departments', component: () => import('../views/Departments.vue') },
-    { path: '/appointments', component: () => import('../views/Appointments.vue') },
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('../views/login/Index.vue'),
+    },
+    {
+      path: '/',
+      component: () => import('../views/layout/Index.vue'),
+      children: [
+        {
+          path: '',
+          name: 'Home',
+          component: () => import('../views/home/Index.vue'),
+        },
+        {
+          path: 'booking',
+          name: 'Booking',
+          component: () => import('../views/booking/Index.vue'),
+        },
+        {
+          path: 'appointments',
+          name: 'Appointments',
+          component: () => import('../views/appointment/Index.vue'),
+        },
+      ],
+    },
   ],
 })
 
 router.beforeEach(async (to) => {
-  const token = getToken()
-  if (to.path !== '/login' && !token) return '/login'
-  if (token && !currentUser.value && !(await loadCurrentUser())) return '/login'
-  if (to.path === '/login' && currentUser.value) return '/'
+  const hasToken = !!getToken()
+  if (to.path !== '/login' && !hasToken) return '/login'
+  if (to.path === '/login' && hasToken) return '/'
+  if (hasToken && !currentUser.value) await loadCurrentUser()
 })
 
 export default router

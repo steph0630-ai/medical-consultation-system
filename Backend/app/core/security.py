@@ -1,35 +1,73 @@
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
+from typing import Dict, Optional
+import uuid
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
 from app.core.config import settings
 
-password_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
-def hash_password(password: str) -> str:
-    return password_context.hash(password)
+class AuthBase:
+    @staticmethod
+    def create_access_token(
+        subject: str,
+        scope: str,
+        expires_delta: Optional[timedelta] = None,
+    ) -> str:
+        expire = datetime.now(UTC) + (
+            expires_delta
+            if expires_delta
+            else timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+        )
+        return jwt.encode(
+            {
+                "exp": expire,
+                "sub": str(subject),
+                "scope": scope,
+                "jti": str(uuid.uuid4()),
+            },
+            settings.SECRET_KEY,
+            algorithm=settings.ALGORITHM,
+        )
 
+    @staticmethod
+    def create_refresh_token(
+        subject: str, expires_delta: Optional[timedelta] = None
+    ) -> str:
+        expire = datetime.now(UTC) + (
+            expires_delta if expires_delta else timedelta(days=7)
+        )
+        return jwt.encode(
+            {
+                "exp": expire,
+                "sub": str(subject),
+                "jti": str(uuid.uuid4()),
+                "scope": "refresh",
+            },
+            settings.SECRET_KEY,
+            algorithm=settings.ALGORITHM,
+        )
 
-def verify_password(password: str, password_hash: str) -> bool:
-    return password_context.verify(password, password_hash)
-
-
-def create_token(subject: int, scope: str, expires: timedelta) -> str:
-    payload = {
-        "sub": str(subject),
-        "scope": scope,
-        "exp": datetime.now(timezone.utc) + expires,
-    }
-    return jwt.encode(payload, settings.secret_key, algorithm="HS256")
-
-
-def decode_access_token(token: str) -> int | None:
-    try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=["HS256"])
-        if payload.get("scope") != "client":
+    @staticmethod
+    def verify_token(token: str, scope: str = None) -> Optional[Dict]:
+        try:
+            payload = jwt.decode(
+                token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+            )
+            if scope and payload.get("scope") != scope:
+                return None
+            return payload
+        except JWTError:
             return None
-        return int(payload["sub"])
-    except (JWTError, KeyError, TypeError, ValueError):
-        return None
+
+    @staticmethod
+    def hash_token(token: str) -> str:
+        return pwd_context.hash(token)
+
+    @staticmethod
+    def verify_token_hash(plain_token: str, hashed_token: str) -> bool:
+        return pwd_context.verify(plain_token, hashed_token)

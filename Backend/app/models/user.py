@@ -1,18 +1,29 @@
-from datetime import datetime
+from passlib.context import CryptContext
+from sqlalchemy import Boolean, Column, Integer, String, TIMESTAMP, func
 
-from sqlalchemy import Boolean, DateTime, String, func
-from sqlalchemy.orm import Mapped, mapped_column
-
-from app.db import Base
+from app.models.base import BaseModel
 
 
-class User(Base):
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
+class User(BaseModel):
     __tablename__ = "users"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
-    hashed_password: Mapped[str] = mapped_column(String(255))
-    first_name: Mapped[str] = mapped_column(String(100))
-    last_name: Mapped[str] = mapped_column(String(100))
-    is_active: Mapped[bool] = mapped_column(Boolean, default=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    email = Column(String(255), unique=True, index=True)
+    hashed_password = Column(String(255))
+    first_name = Column(String(100), nullable=True)
+    last_name = Column(String(100), nullable=True)
+    avatar = Column(String(255), nullable=True)
+    gender = Column(String(50), nullable=True)
+    is_active = Column(Boolean, default=False)
+    is_verified = Column(Boolean, default=False)
+    last_active_at = Column(TIMESTAMP(timezone=True), nullable=True, default=func.now())
+
+    @staticmethod
+    def get_password_hash(password: str) -> str:
+        return pwd_context.hash(password)
+
+    def verify_password(self, plain_password: str) -> bool:
+        return pwd_context.verify(plain_password, self.hashed_password)

@@ -2,7 +2,7 @@ name: medical-consultation-system
 
 services:
   postgres:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:pg16
     environment:
       POSTGRES_DB: app
       POSTGRES_USER: postgres
@@ -15,18 +15,41 @@ services:
       timeout: 3s
       retries: 10
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_aligned_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --appendonly yes
+    ports:
+      - "6386:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - redis_data:/data
 
   backend:
     build: .
     environment:
-      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/app
+      ENV: production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: app
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
       SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
       ACCESS_TOKEN_EXPIRE_MINUTES: 30
+    command: sh -c "alembic upgrade head && python main.py"
     ports:
       - "8001:8001"
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/api/v1/config/health')"]
@@ -43,4 +66,5 @@ services:
         condition: service_healthy
 
 volumes:
-  postgres_data:
+  postgres_aligned_data:
+  redis_data:

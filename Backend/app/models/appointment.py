@@ -1,18 +1,26 @@
-from datetime import datetime
+from sqlalchemy import Column, ForeignKey, Integer, String, TIMESTAMP
 
-from sqlalchemy import DateTime, ForeignKey, String, func
-from sqlalchemy.orm import Mapped, mapped_column
-
-from app.db import Base
+from app.models.base import BaseModel
 
 
-class Appointment(Base):
+class Appointment(BaseModel):
     __tablename__ = "appointments"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    patient_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
-    doctor_id: Mapped[int] = mapped_column(ForeignKey("doctors.id"), index=True)
-    department_id: Mapped[int] = mapped_column(ForeignKey("departments.id"), index=True)
-    appointment_time: Mapped[datetime] = mapped_column(DateTime(timezone=True), index=True)
-    status: Mapped[str] = mapped_column(String(20), default="pending", index=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now())
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    patient_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    doctor_id = Column(Integer, ForeignKey("doctors.id"), nullable=False, index=True)
+    department_id = Column(
+        Integer, ForeignKey("departments.id"), nullable=False, index=True
+    )
+    appointment_time = Column(TIMESTAMP(timezone=True), nullable=False, index=True)
+    status = Column(
+        String(20),
+        nullable=False,
+        default="pending",
+        index=True,
+        comment=(
+            "pending: 待确认, confirmed: 已确认, "
+            "waiting_exam: 待检查结果（医生已开检查，等检验科出报告）, "
+            "completed: 已完成, cancelled: 已取消"
+        ),
+    )

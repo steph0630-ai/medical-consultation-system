@@ -1,0 +1,16 @@
+from sqlalchemy import Column, ForeignKey, Integer, String, Text
+
+from app.models.base import BaseModel
+
+
+class MedicalRecord(BaseModel):
+    __tablename__ = "medical_records"
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    appointment_id = Column(
+        Integer, ForeignKey("appointments.id"), nullable=False, index=True
+    )
+    patient_id = Column(Integer, ForeignKey("users.id"), nullable=False, index=True)
+    doctor_id = Column(Integer, ForeignKey("doctors.id"), nullable=False, index=True)
+    diagnosis = Column(String(500), nullable=False)
+    content = Column(Text, nullable=True)

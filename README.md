@@ -25,11 +25,16 @@ docker compose down
 
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
+- `POST /api/v1/auth/refresh`
+- `POST /api/v1/auth/logout`
 - `GET /api/v1/users/me`
 - `GET /api/v1/departments`
+- `GET /api/v1/departments/{department_id}`
 - `GET /api/v1/doctors?department_id=1`
+- `GET /api/v1/doctors/{doctor_id}`
 - `POST /api/v1/appointments`
 - `GET /api/v1/appointments`
+- `DELETE /api/v1/appointments/{appointment_id}`
 
 ## 本地开发患者端
 

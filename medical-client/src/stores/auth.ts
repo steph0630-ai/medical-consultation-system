@@ -1,11 +1,11 @@
 import { ref } from 'vue'
-import { getMyProfile } from '../api/auth'
-import type { User } from '../types'
-import { clearTokens, getToken } from '../utils/request'
+import { getMyProfile } from '../api/user'
+import type { User } from '../types/api'
+import { clearToken, getToken } from '../utils/request'
 
 export const currentUser = ref<User | null>(null)
 
-export async function loadCurrentUser() {
+export async function loadCurrentUser(): Promise<User | null> {
   if (!getToken()) {
     currentUser.value = null
     return null
@@ -19,7 +19,7 @@ export async function loadCurrentUser() {
   }
 }
 
-export function logout() {
+export function clearCurrentUser(): void {
   currentUser.value = null
-  clearTokens()
+  clearToken()
 }
