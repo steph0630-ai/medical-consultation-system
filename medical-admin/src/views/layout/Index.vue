@@ -18,6 +18,9 @@
         <el-menu-item v-if="isDoctor" index="/my-appointments">
           <span>我的接诊</span>
         </el-menu-item>
+        <el-menu-item v-if="isPharmacist" index="/prescriptions">
+          <span>待发药处方</span>
+        </el-menu-item>
         <el-menu-item index="/profile">
           <span>个人中心</span>
         </el-menu-item>
@@ -47,6 +50,7 @@ const router = useRouter()
 const activePath = computed(() => route.path)
 const isSuperadmin = computed(() => currentAdmin.value?.role === 'superadmin')
 const isDoctor = computed(() => currentAdmin.value?.role === 'doctor')
+const isPharmacist = computed(() => currentAdmin.value?.role === 'pharmacist')
 const roleLabel = computed(() => getRoleLabel(currentAdmin.value?.role))
 
 function handleLogout() {

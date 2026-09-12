@@ -38,6 +38,25 @@ def get_session_local():
     return AsyncSessionLocal
 
 
+def create_scheduler_engine():
+    return create_async_engine(
+        SQLALCHEMY_DATABASE_URL,
+        echo=True,
+        future=True,
+        pool_pre_ping=True,
+        pool_recycle=1800,
+        pool_timeout=30,
+        max_overflow=5,
+        pool_size=5,
+    )
+
+
+def create_scheduler_session_factory(scheduler_engine):
+    return async_sessionmaker(
+        bind=scheduler_engine, class_=AsyncSession, expire_on_commit=False
+    )
+
+
 async def close_db_engine():
     if engine is not None:
         await engine.dispose()

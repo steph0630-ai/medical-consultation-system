@@ -57,6 +57,29 @@ services:
       timeout: 3s
       retries: 10
 
+  celery-worker:
+    build: .
+    environment:
+      ENV: production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: app
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
+    command: celery -A app.core.celery_app worker --loglevel=info -Q celery
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+
   frontend:
     build: ../medical-client
     ports:

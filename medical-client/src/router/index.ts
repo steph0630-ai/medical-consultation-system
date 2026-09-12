@@ -29,6 +29,11 @@ const router = createRouter({
           name: 'Appointments',
           component: () => import('../views/appointment/Index.vue'),
         },
+        {
+          path: 'prescriptions',
+          name: 'Prescriptions',
+          component: () => import('../views/prescription/Index.vue'),
+        },
       ],
     },
   ],

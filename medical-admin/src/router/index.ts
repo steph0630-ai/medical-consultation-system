@@ -50,6 +50,12 @@ const router = createRouter({
           meta: { roles: ['doctor'] satisfies RouteRole[] },
         },
         {
+          path: '/prescriptions',
+          name: 'Prescriptions',
+          component: () => import('../views/prescription/Index.vue'),
+          meta: { roles: ['pharmacist'] satisfies RouteRole[] },
+        },
+        {
           path: '/profile',
           name: 'Profile',
           component: () => import('../views/profile/Index.vue'),

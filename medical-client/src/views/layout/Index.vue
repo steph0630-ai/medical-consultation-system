@@ -6,6 +6,7 @@
         <el-menu-item index="/">首页</el-menu-item>
         <el-menu-item index="/booking">预约挂号</el-menu-item>
         <el-menu-item index="/appointments">我的预约</el-menu-item>
+        <el-menu-item index="/prescriptions">我的处方</el-menu-item>
       </el-menu>
       <div class="user-area">
         <el-dropdown @command="handleCommand">

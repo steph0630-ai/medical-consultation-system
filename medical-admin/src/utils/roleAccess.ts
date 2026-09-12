@@ -15,14 +15,21 @@ export const roleLabels: Record<BackofficeRole, string> = {
   lab: '检验科',
 }
 
+export const roleHomePaths: Record<BackofficeRole, string> = {
+  superadmin: '/departments',
+  admin: '/profile',
+  doctor: '/my-appointments',
+  pharmacist: '/prescriptions',
+  cashier: '/profile',
+  lab: '/profile',
+}
+
 export function isBackofficeRole(role?: string): role is BackofficeRole {
-  return Boolean(role && role in roleLabels)
+  return Boolean(role && role in roleHomePaths)
 }
 
 export function getRoleHomePath(role?: string): string {
-  if (role === 'superadmin') return '/departments'
-  if (role === 'doctor') return '/my-appointments'
-  return isBackofficeRole(role) ? '/profile' : '/login'
+  return isBackofficeRole(role) ? roleHomePaths[role] : '/login'
 }
 
 export function getRoleLabel(role?: string): string {

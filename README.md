@@ -37,6 +37,13 @@ docker compose down
 - `POST /api/v1/appointments`
 - `GET /api/v1/appointments`
 - `DELETE /api/v1/appointments/{appointment_id}`
+- `GET /api/v1/prescriptions`
+- `GET /api/v1/prescriptions/{prescription_id}`
+- `PUT /api/v1/prescriptions/{prescription_id}/items/{item_id}/selection`
+- `POST /api/v1/prescriptions/{prescription_id}/bill`
+- `GET /api/v1/bills`
+- `POST /api/v1/bills/{bill_id}/pay`
+- `GET /api/v1/bills/{bill_id}/payment-status`
 
 后台接口：
 
