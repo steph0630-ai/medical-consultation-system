@@ -49,6 +49,11 @@ const router = createRouter({
           name: 'MedicalRecords',
           component: () => import('../views/medicalRecord/Index.vue'),
         },
+        {
+          path: 'profile',
+          name: 'Profile',
+          component: () => import('../views/profile/Index.vue'),
+        },
       ],
     },
   ],
