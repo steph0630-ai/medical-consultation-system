@@ -20,6 +20,7 @@ CLIENT_ROUTES = [
     RouteConfig("app.api.client.v1.prescription", f"{settings.API_V1_STR}/prescriptions", ["client-prescription"]),
     RouteConfig("app.api.client.v1.bill", f"{settings.API_V1_STR}/bills", ["client-bill"]),
     RouteConfig("app.api.client.v1.report", f"{settings.API_V1_STR}/reports", ["client-report"]),
+    RouteConfig("app.api.client.v1.medical_record", f"{settings.API_V1_STR}/medical-records", ["client-medical-record"]),
 ]
 
 BACKOFFICE_ROUTES = [

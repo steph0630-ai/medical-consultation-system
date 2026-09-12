@@ -47,6 +47,7 @@ docker compose down
 - `GET /api/v1/reports`
 - `POST /api/v1/reports/{report_id}/chat`
 - `POST /api/v1/reports/{report_id}/chat/stream`
+- `GET /api/v1/medical-records`
 
 后台接口：
 

@@ -9,6 +9,7 @@
         <el-menu-item index="/prescriptions">我的处方</el-menu-item>
         <el-menu-item index="/bills">我的账单</el-menu-item>
         <el-menu-item index="/reports">我的报告</el-menu-item>
+        <el-menu-item index="/medical-records">我的病历</el-menu-item>
       </el-menu>
       <div class="user-area">
         <el-dropdown @command="handleCommand">
