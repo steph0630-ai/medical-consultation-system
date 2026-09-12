@@ -1,0 +1,71 @@
+import { createRouter, createWebHistory } from 'vue-router'
+import { currentAdmin, loadCurrentAdmin } from '../stores/auth'
+import { clearToken, getToken } from '../utils/request'
+import { getRoleHomePath } from '../utils/roleAccess'
+
+type RouteRole = 'superadmin' | 'admin' | 'doctor' | 'pharmacist' | 'cashier' | 'lab'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/login',
+      name: 'Login',
+      component: () => import('../views/login/Index.vue'),
+    },
+    {
+      path: '/',
+      name: 'Layout',
+      component: () => import('../views/layout/Index.vue'),
+      redirect: () => getRoleHomePath(currentAdmin.value?.role),
+      children: [
+        {
+          path: '/admins',
+          name: 'Admins',
+          component: () => import('../views/admin/Index.vue'),
+          meta: { roles: ['superadmin'] satisfies RouteRole[] },
+        },
+        {
+          path: '/profile',
+          name: 'Profile',
+          component: () => import('../views/profile/Index.vue'),
+          meta: {
+            roles: [
+              'admin',
+              'superadmin',
+              'doctor',
+              'pharmacist',
+              'cashier',
+              'lab',
+            ] satisfies RouteRole[],
+          },
+        },
+      ],
+    },
+  ],
+})
+
+router.beforeEach(async (to) => {
+  const token = getToken()
+  if (to.path !== '/login' && !token) return '/login'
+
+  if (token && !currentAdmin.value) {
+    try {
+      await loadCurrentAdmin()
+    } catch {
+      clearToken()
+      return '/login'
+    }
+  }
+
+  if (to.path === '/login' && currentAdmin.value) {
+    return getRoleHomePath(currentAdmin.value.role)
+  }
+
+  const allowedRoles = to.meta.roles as RouteRole[] | undefined
+  if (allowedRoles && !allowedRoles.includes(currentAdmin.value?.role as RouteRole)) {
+    return getRoleHomePath(currentAdmin.value?.role)
+  }
+})
+
+export default router

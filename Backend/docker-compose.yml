@@ -65,6 +65,14 @@ services:
       backend:
         condition: service_healthy
 
+  admin:
+    build: ../medical-admin
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
 volumes:
   postgres_aligned_data:
   redis_data:

@@ -19,7 +19,18 @@ CLIENT_ROUTES = [
     RouteConfig("app.api.client.v1.appointment", f"{settings.API_V1_STR}/appointments", ["client-appointment"]),
 ]
 
-BACKOFFICE_ROUTES = []
+BACKOFFICE_ROUTES = [
+    RouteConfig(
+        "app.api.backoffice.v1.auth",
+        f"{settings.API_V1_STR}/backoffice/auth",
+        ["backoffice-auth"],
+    ),
+    RouteConfig(
+        "app.api.backoffice.v1.admin",
+        f"{settings.API_V1_STR}/backoffice/admins",
+        ["backoffice-admin"],
+    ),
+]
 COMMON_ROUTES = []
 
 
