@@ -40,6 +40,26 @@ BACKOFFICE_ROUTES = [
         f"{settings.API_V1_STR}/backoffice/doctors",
         ["backoffice-doctor"],
     ),
+    RouteConfig(
+        "app.api.backoffice.v1.drug",
+        f"{settings.API_V1_STR}/backoffice/drugs",
+        ["backoffice-drug"],
+    ),
+    RouteConfig(
+        "app.api.backoffice.v1.appointment",
+        f"{settings.API_V1_STR}/backoffice/appointments",
+        ["backoffice-appointment"],
+    ),
+    RouteConfig(
+        "app.api.backoffice.v1.medical_record",
+        f"{settings.API_V1_STR}/backoffice/medical-records",
+        ["backoffice-medical-record"],
+    ),
+    RouteConfig(
+        "app.api.backoffice.v1.prescription",
+        f"{settings.API_V1_STR}/backoffice/prescriptions",
+        ["backoffice-prescription"],
+    ),
 ]
 COMMON_ROUTES = []
 

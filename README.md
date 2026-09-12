@@ -61,6 +61,16 @@ docker compose down
 - `GET /api/v1/backoffice/doctors/{doctor_id}`
 - `PUT /api/v1/backoffice/doctors/{doctor_id}`
 - `DELETE /api/v1/backoffice/doctors/{doctor_id}`
+- `GET /api/v1/backoffice/drugs`
+- `POST /api/v1/backoffice/drugs`
+- `PUT /api/v1/backoffice/drugs/{drug_id}`
+- `DELETE /api/v1/backoffice/drugs/{drug_id}`
+- `GET /api/v1/backoffice/appointments`
+- `PUT /api/v1/backoffice/appointments/{appointment_id}`
+- `POST /api/v1/backoffice/medical-records`
+- `POST /api/v1/backoffice/prescriptions`
+- `GET /api/v1/backoffice/prescriptions`
+- `POST /api/v1/backoffice/prescriptions/{prescription_id}/dispense`
 
 首次启动后初始化原项目内置后台账号：
 

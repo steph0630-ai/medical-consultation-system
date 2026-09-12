@@ -38,6 +38,18 @@ const router = createRouter({
           meta: { roles: ['superadmin'] satisfies RouteRole[] },
         },
         {
+          path: '/drugs',
+          name: 'Drugs',
+          component: () => import('../views/drug/Index.vue'),
+          meta: { roles: ['superadmin'] satisfies RouteRole[] },
+        },
+        {
+          path: '/my-appointments',
+          name: 'MyAppointments',
+          component: () => import('../views/appointment/Index.vue'),
+          meta: { roles: ['doctor'] satisfies RouteRole[] },
+        },
+        {
           path: '/profile',
           name: 'Profile',
           component: () => import('../views/profile/Index.vue'),
