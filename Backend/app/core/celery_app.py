@@ -7,7 +7,10 @@ celery_app = Celery(
     "tasks",
     broker=settings.CELERY_BROKER_URL,
     backend=settings.CELERY_RESULT_BACKEND,
-    include=["app.schedule.jobs.payment_callback"],
+    include=[
+        "app.schedule.jobs.payment_callback",
+        "app.schedule.jobs.report_interpret",
+    ],
 )
 
 celery_app.conf.update(

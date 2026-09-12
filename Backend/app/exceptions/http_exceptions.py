@@ -42,3 +42,23 @@ class NotFoundError(APIException):
 class ServerError(APIException):
     def __init__(self, message: str = "Internal server error", data: Any = None):
         super().__init__(code=1005, message=message, status_code=500, data=data)
+
+
+class BudgetExceededError(APIException):
+    def __init__(self, message: str = "Daily LLM token budget exceeded", data: Any = None, language: Optional[str] = None):
+        super().__init__(code=1007, message=message, status_code=429, data=data, language=language)
+
+
+class LLMServiceError(APIException):
+    def __init__(self, message: str = "LLM service unavailable", data: Any = None, language: Optional[str] = None):
+        super().__init__(code=1008, message=message, status_code=503, data=data, language=language)
+
+
+class InputTooLongError(APIException):
+    def __init__(self, message: str = "Input exceeds maximum length", data: Any = None, language: Optional[str] = None):
+        super().__init__(code=1009, message=message, status_code=400, data=data, language=language)
+
+
+class ContentReviewError(APIException):
+    def __init__(self, message: str = "Generated content failed review", data: Any = None, language: Optional[str] = None):
+        super().__init__(code=1010, message=message, status_code=503, data=data, language=language)

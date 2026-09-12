@@ -44,6 +44,9 @@ docker compose down
 - `GET /api/v1/bills`
 - `POST /api/v1/bills/{bill_id}/pay`
 - `GET /api/v1/bills/{bill_id}/payment-status`
+- `GET /api/v1/reports`
+- `POST /api/v1/reports/{report_id}/chat`
+- `POST /api/v1/reports/{report_id}/chat/stream`
 
 后台接口：
 
@@ -80,6 +83,11 @@ docker compose down
 - `POST /api/v1/backoffice/prescriptions/{prescription_id}/dispense`
 - `GET /api/v1/backoffice/bills`
 - `POST /api/v1/backoffice/bills/{bill_id}/settle`
+- `GET /api/v1/backoffice/reports/exam-pending`
+- `GET /api/v1/backoffice/reports`
+- `POST /api/v1/backoffice/reports`
+- `POST /api/v1/backoffice/reports/upload-csv`
+- `POST /api/v1/backoffice/reports/{report_id}/retry-interpretation`
 
 首次启动后初始化原项目内置后台账号：
 
@@ -88,6 +96,11 @@ docker compose exec backend python scripts/init_data.py
 ```
 
 超级管理员账号：`superadmin@test.com`，密码：`admin123`
+
+启用报告 AI 解读前，复制 `Backend/.env.example` 为 `Backend/.env`，并填写：
+
+- `DASHSCOPE_API_KEY`
+- `DEEPSEEK_API_KEY`
 
 ## 本地开发患者端
 

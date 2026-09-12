@@ -24,6 +24,9 @@
         <el-menu-item v-if="isCashier" index="/bills">
           <span>收费管理</span>
         </el-menu-item>
+        <el-menu-item v-if="isLab" index="/reports">
+          <span>最终检验报告</span>
+        </el-menu-item>
         <el-menu-item index="/profile">
           <span>个人中心</span>
         </el-menu-item>
@@ -55,6 +58,7 @@ const isSuperadmin = computed(() => currentAdmin.value?.role === 'superadmin')
 const isDoctor = computed(() => currentAdmin.value?.role === 'doctor')
 const isPharmacist = computed(() => currentAdmin.value?.role === 'pharmacist')
 const isCashier = computed(() => currentAdmin.value?.role === 'cashier')
+const isLab = computed(() => currentAdmin.value?.role === 'lab')
 const roleLabel = computed(() => getRoleLabel(currentAdmin.value?.role))
 
 function handleLogout() {

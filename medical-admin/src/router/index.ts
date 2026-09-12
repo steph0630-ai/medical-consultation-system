@@ -62,6 +62,12 @@ const router = createRouter({
           meta: { roles: ['cashier'] satisfies RouteRole[] },
         },
         {
+          path: '/reports',
+          name: 'Reports',
+          component: () => import('../views/report/Index.vue'),
+          meta: { roles: ['lab'] satisfies RouteRole[] },
+        },
+        {
           path: '/profile',
           name: 'Profile',
           component: () => import('../views/profile/Index.vue'),

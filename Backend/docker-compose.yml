@@ -43,6 +43,8 @@ services:
       REDIS_PORT: 6379
       SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
       ACCESS_TOKEN_EXPIRE_MINUTES: 30
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-dummy-api-key}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-dummy-api-key}
     command: sh -c "alembic upgrade head && python main.py"
     ports:
       - "8001:8001"
@@ -69,6 +71,8 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-dummy-api-key}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-dummy-api-key}
     command: celery -A app.core.celery_app worker --loglevel=info -Q celery
     depends_on:
       postgres:

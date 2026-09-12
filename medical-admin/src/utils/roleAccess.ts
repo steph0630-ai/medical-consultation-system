@@ -21,7 +21,7 @@ export const roleHomePaths: Record<BackofficeRole, string> = {
   doctor: '/my-appointments',
   pharmacist: '/prescriptions',
   cashier: '/bills',
-  lab: '/profile',
+  lab: '/reports',
 }
 
 export function isBackofficeRole(role?: string): role is BackofficeRole {

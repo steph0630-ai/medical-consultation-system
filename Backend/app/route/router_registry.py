@@ -19,6 +19,7 @@ CLIENT_ROUTES = [
     RouteConfig("app.api.client.v1.appointment", f"{settings.API_V1_STR}/appointments", ["client-appointment"]),
     RouteConfig("app.api.client.v1.prescription", f"{settings.API_V1_STR}/prescriptions", ["client-prescription"]),
     RouteConfig("app.api.client.v1.bill", f"{settings.API_V1_STR}/bills", ["client-bill"]),
+    RouteConfig("app.api.client.v1.report", f"{settings.API_V1_STR}/reports", ["client-report"]),
 ]
 
 BACKOFFICE_ROUTES = [
@@ -66,6 +67,11 @@ BACKOFFICE_ROUTES = [
         "app.api.backoffice.v1.bill",
         f"{settings.API_V1_STR}/backoffice/bills",
         ["backoffice-bill"],
+    ),
+    RouteConfig(
+        "app.api.backoffice.v1.report",
+        f"{settings.API_V1_STR}/backoffice/reports",
+        ["backoffice-report"],
     ),
 ]
 COMMON_ROUTES = []
