@@ -92,7 +92,13 @@ BACKOFFICE_ROUTES = [
         ["backoffice-ai-monitor"],
     ),
 ]
-COMMON_ROUTES = []
+COMMON_ROUTES = [
+    RouteConfig(
+        "app.api.docs_export",
+        "",
+        ["API Documentation Export"],
+    ),
+]
 
 
 def register_routes(app, route_configs: List[RouteConfig]):

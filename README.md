@@ -17,6 +17,11 @@ docker compose up -d --build
 
 健康检查：`http://localhost:8001/api/v1/config/health`
 
+API 文档导出：`http://localhost:8001/api-docs/`
+
+- 患者端：`http://localhost:8001/api-docs/client.json`
+- 后台端：`http://localhost:8001/api-docs/backoffice.json`
+
 停止服务：
 
 ```powershell
