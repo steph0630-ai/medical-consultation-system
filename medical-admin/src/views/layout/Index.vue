@@ -6,6 +6,9 @@
         <el-menu-item v-if="isSuperadmin" index="/departments">
           <span>科室管理</span>
         </el-menu-item>
+        <el-menu-item v-if="isSuperadmin" index="/knowledge">
+          <span>知识库管理</span>
+        </el-menu-item>
         <el-menu-item v-if="isSuperadmin" index="/admins">
           <span>管理员管理</span>
         </el-menu-item>

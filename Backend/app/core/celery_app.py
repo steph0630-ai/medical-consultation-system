@@ -10,6 +10,7 @@ celery_app = Celery(
     include=[
         "app.schedule.jobs.payment_callback",
         "app.schedule.jobs.report_interpret",
+        "app.schedule.jobs.knowledge_embed",
     ],
 )
 

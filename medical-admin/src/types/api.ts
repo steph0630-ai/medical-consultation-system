@@ -13,6 +13,32 @@ export interface PaginationResponse<T> {
   has_more: boolean
 }
 
+export interface KnowledgeUploadRequest {
+  source: string
+  content: string
+  source_type: string
+}
+
+export interface KnowledgeDocument {
+  source: string
+  chunk_count: number
+  created_at: string
+  updated_at: string
+}
+
+export interface KnowledgeCategory {
+  source_type: string
+  document_count: number
+  chunk_count: number
+  documents: KnowledgeDocument[]
+}
+
+export interface KnowledgeLibrary {
+  document_count: number
+  chunk_count: number
+  categories: KnowledgeCategory[]
+}
+
 export interface LoginRequest {
   email: string
   password: string

@@ -41,6 +41,11 @@ BACKOFFICE_ROUTES = [
         ["backoffice-department"],
     ),
     RouteConfig(
+        "app.api.backoffice.v1.knowledge",
+        f"{settings.API_V1_STR}/backoffice/knowledge",
+        ["backoffice-knowledge"],
+    ),
+    RouteConfig(
         "app.api.backoffice.v1.doctor",
         f"{settings.API_V1_STR}/backoffice/doctors",
         ["backoffice-doctor"],

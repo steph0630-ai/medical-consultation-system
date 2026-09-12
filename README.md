@@ -69,6 +69,8 @@ docker compose down
 - `PUT /api/v1/backoffice/departments/{department_id}`
 - `DELETE /api/v1/backoffice/departments/{department_id}`
 - `POST /api/v1/backoffice/departments/import-md`
+- `GET /api/v1/backoffice/knowledge`
+- `POST /api/v1/backoffice/knowledge`
 - `POST /api/v1/backoffice/doctors`
 - `GET /api/v1/backoffice/doctors`
 - `GET /api/v1/backoffice/doctors/{doctor_id}`
