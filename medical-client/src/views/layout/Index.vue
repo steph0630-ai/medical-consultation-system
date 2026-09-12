@@ -4,6 +4,7 @@
       <div class="logo" @click="router.push('/')">智慧医院</div>
       <el-menu :default-active="activePath" mode="horizontal" router class="nav">
         <el-menu-item index="/">首页</el-menu-item>
+        <el-menu-item index="/triage">AI 智能分诊</el-menu-item>
         <el-menu-item index="/booking">预约挂号</el-menu-item>
         <el-menu-item index="/appointments">我的预约</el-menu-item>
         <el-menu-item index="/prescriptions">我的处方</el-menu-item>

@@ -30,6 +30,8 @@ docker compose down
 - `POST /api/v1/auth/refresh`
 - `POST /api/v1/auth/logout`
 - `GET /api/v1/users/me`
+- `POST /api/v1/triage/chat`
+- `POST /api/v1/triage/chat/stream`
 - `GET /api/v1/departments`
 - `GET /api/v1/departments/{department_id}`
 - `GET /api/v1/doctors?department_id=1`

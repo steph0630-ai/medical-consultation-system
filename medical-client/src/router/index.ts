@@ -20,6 +20,11 @@ const router = createRouter({
           component: () => import('../views/home/Index.vue'),
         },
         {
+          path: 'triage',
+          name: 'Triage',
+          component: () => import('../views/triage/Index.vue'),
+        },
+        {
           path: 'booking',
           name: 'Booking',
           component: () => import('../views/booking/Index.vue'),

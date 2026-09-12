@@ -13,6 +13,7 @@ class RouteConfig:
 CLIENT_ROUTES = [
     RouteConfig("app.api.client.v1.auth", f"{settings.API_V1_STR}/auth", ["client-auth"]),
     RouteConfig("app.api.client.v1.user", f"{settings.API_V1_STR}/users", ["client-user"]),
+    RouteConfig("app.api.client.v1.triage", f"{settings.API_V1_STR}/triage", ["client-triage"]),
     RouteConfig("app.api.client.v1.config", f"{settings.API_V1_STR}/config", ["client-config"]),
     RouteConfig("app.api.client.v1.department", f"{settings.API_V1_STR}/departments", ["client-department"]),
     RouteConfig("app.api.client.v1.doctor", f"{settings.API_V1_STR}/doctors", ["client-doctor"]),
