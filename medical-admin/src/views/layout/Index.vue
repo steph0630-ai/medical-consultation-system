@@ -18,6 +18,9 @@
         <el-menu-item v-if="isSuperadmin" index="/drugs">
           <span>药品目录</span>
         </el-menu-item>
+        <el-menu-item v-if="isSuperadmin" index="/ai-monitor">
+          <span>AI 运行监控</span>
+        </el-menu-item>
         <el-menu-item v-if="isDoctor" index="/my-appointments">
           <span>我的接诊</span>
         </el-menu-item>

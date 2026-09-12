@@ -80,6 +80,11 @@ BACKOFFICE_ROUTES = [
         f"{settings.API_V1_STR}/backoffice/reports",
         ["backoffice-report"],
     ),
+    RouteConfig(
+        "app.api.backoffice.v1.ai_monitor",
+        f"{settings.API_V1_STR}/backoffice/ai-monitor",
+        ["backoffice-ai-monitor"],
+    ),
 ]
 COMMON_ROUTES = []
 

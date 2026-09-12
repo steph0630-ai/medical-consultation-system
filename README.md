@@ -93,6 +93,7 @@ docker compose down
 - `POST /api/v1/backoffice/reports`
 - `POST /api/v1/backoffice/reports/upload-csv`
 - `POST /api/v1/backoffice/reports/{report_id}/retry-interpretation`
+- `GET /api/v1/backoffice/ai-monitor/overview`
 
 首次启动后初始化原项目内置后台账号：
 

@@ -50,6 +50,12 @@ const router = createRouter({
           meta: { roles: ['superadmin'] satisfies RouteRole[] },
         },
         {
+          path: '/ai-monitor',
+          name: 'AiMonitor',
+          component: () => import('../views/ai-monitor/Index.vue'),
+          meta: { roles: ['superadmin'] satisfies RouteRole[] },
+        },
+        {
           path: '/my-appointments',
           name: 'MyAppointments',
           component: () => import('../views/appointment/Index.vue'),
