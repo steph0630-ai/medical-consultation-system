@@ -24,6 +24,23 @@ export interface TokenResponse {
   token_type: string
 }
 
+export interface Department {
+  id: number
+  name: string
+  description?: string
+  created_at: string
+  updated_at: string
+}
+
+export interface DepartmentImportRequest {
+  content: string
+}
+
+export interface DepartmentImportResult {
+  created: string[]
+  skipped: string[]
+}
+
 export interface Admin {
   id: number
   email: string

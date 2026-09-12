@@ -3,8 +3,14 @@
     <el-aside width="200px">
       <div class="logo">医疗后台管理</div>
       <el-menu :default-active="activePath" router>
+        <el-menu-item v-if="isSuperadmin" index="/departments">
+          <span>科室管理</span>
+        </el-menu-item>
         <el-menu-item v-if="isSuperadmin" index="/admins">
           <span>管理员管理</span>
+        </el-menu-item>
+        <el-menu-item v-if="isSuperadmin" index="/doctors">
+          <span>医生管理</span>
         </el-menu-item>
         <el-menu-item index="/profile">
           <span>个人中心</span>

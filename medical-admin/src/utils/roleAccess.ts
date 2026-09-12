@@ -20,7 +20,7 @@ export function isBackofficeRole(role?: string): role is BackofficeRole {
 }
 
 export function getRoleHomePath(role?: string): string {
-  if (role === 'superadmin') return '/admins'
+  if (role === 'superadmin') return '/departments'
   return isBackofficeRole(role) ? '/profile' : '/login'
 }
 

@@ -20,9 +20,21 @@ const router = createRouter({
       redirect: () => getRoleHomePath(currentAdmin.value?.role),
       children: [
         {
+          path: '/departments',
+          name: 'Departments',
+          component: () => import('../views/department/Index.vue'),
+          meta: { roles: ['superadmin'] satisfies RouteRole[] },
+        },
+        {
           path: '/admins',
           name: 'Admins',
           component: () => import('../views/admin/Index.vue'),
+          meta: { roles: ['superadmin'] satisfies RouteRole[] },
+        },
+        {
+          path: '/doctors',
+          name: 'Doctors',
+          component: () => import('../views/doctor/Index.vue'),
           meta: { roles: ['superadmin'] satisfies RouteRole[] },
         },
         {

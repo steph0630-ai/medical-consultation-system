@@ -50,6 +50,17 @@ docker compose down
 - `DELETE /api/v1/backoffice/admins/{admin_id}`
 - `POST /api/v1/backoffice/admins/{admin_id}/change-password`
 - `POST /api/v1/backoffice/admins/{admin_id}/reset-password`
+- `POST /api/v1/backoffice/departments`
+- `GET /api/v1/backoffice/departments`
+- `GET /api/v1/backoffice/departments/{department_id}`
+- `PUT /api/v1/backoffice/departments/{department_id}`
+- `DELETE /api/v1/backoffice/departments/{department_id}`
+- `POST /api/v1/backoffice/departments/import-md`
+- `POST /api/v1/backoffice/doctors`
+- `GET /api/v1/backoffice/doctors`
+- `GET /api/v1/backoffice/doctors/{doctor_id}`
+- `PUT /api/v1/backoffice/doctors/{doctor_id}`
+- `DELETE /api/v1/backoffice/doctors/{doctor_id}`
 
 首次启动后初始化原项目内置后台账号：
 

@@ -30,6 +30,16 @@ BACKOFFICE_ROUTES = [
         f"{settings.API_V1_STR}/backoffice/admins",
         ["backoffice-admin"],
     ),
+    RouteConfig(
+        "app.api.backoffice.v1.department",
+        f"{settings.API_V1_STR}/backoffice/departments",
+        ["backoffice-department"],
+    ),
+    RouteConfig(
+        "app.api.backoffice.v1.doctor",
+        f"{settings.API_V1_STR}/backoffice/doctors",
+        ["backoffice-doctor"],
+    ),
 ]
 COMMON_ROUTES = []
 
