@@ -50,6 +50,9 @@ docker compose down
 - `POST /api/v1/reports/{report_id}/chat`
 - `POST /api/v1/reports/{report_id}/chat/stream`
 - `GET /api/v1/medical-records`
+- `GET /api/v1/aws/temporary-credentials`
+- `POST /api/v1/aws/presigned-upload-url`
+- `GET /api/v1/aws/presigned-download-url`
 
 后台接口：
 
@@ -94,6 +97,7 @@ docker compose down
 - `POST /api/v1/backoffice/reports/upload-csv`
 - `POST /api/v1/backoffice/reports/{report_id}/retry-interpretation`
 - `GET /api/v1/backoffice/ai-monitor/overview`
+- `GET /api/v1/backoffice/aws/temporary-credentials`
 
 首次启动后初始化原项目内置后台账号：
 

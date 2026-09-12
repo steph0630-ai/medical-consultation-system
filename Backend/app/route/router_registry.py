@@ -15,6 +15,7 @@ CLIENT_ROUTES = [
     RouteConfig("app.api.client.v1.user", f"{settings.API_V1_STR}/users", ["client-user"]),
     RouteConfig("app.api.client.v1.triage", f"{settings.API_V1_STR}/triage", ["client-triage"]),
     RouteConfig("app.api.client.v1.config", f"{settings.API_V1_STR}/config", ["client-config"]),
+    RouteConfig("app.api.client.v1.aws", f"{settings.API_V1_STR}/aws", ["client-aws"]),
     RouteConfig("app.api.client.v1.department", f"{settings.API_V1_STR}/departments", ["client-department"]),
     RouteConfig("app.api.client.v1.doctor", f"{settings.API_V1_STR}/doctors", ["client-doctor"]),
     RouteConfig("app.api.client.v1.appointment", f"{settings.API_V1_STR}/appointments", ["client-appointment"]),
@@ -34,6 +35,11 @@ BACKOFFICE_ROUTES = [
         "app.api.backoffice.v1.admin",
         f"{settings.API_V1_STR}/backoffice/admins",
         ["backoffice-admin"],
+    ),
+    RouteConfig(
+        "app.api.backoffice.v1.aws",
+        f"{settings.API_V1_STR}/backoffice/aws",
+        ["backoffice-aws"],
     ),
     RouteConfig(
         "app.api.backoffice.v1.department",
