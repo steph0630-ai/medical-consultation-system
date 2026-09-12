@@ -30,6 +30,7 @@ docker compose down
 
 患者接口：
 
+- `POST /api/v1/demo`
 - `POST /api/v1/auth/register`
 - `POST /api/v1/auth/login`
 - `POST /api/v1/auth/refresh`
