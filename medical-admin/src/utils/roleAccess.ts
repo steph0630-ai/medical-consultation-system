@@ -20,7 +20,7 @@ export const roleHomePaths: Record<BackofficeRole, string> = {
   admin: '/profile',
   doctor: '/my-appointments',
   pharmacist: '/prescriptions',
-  cashier: '/profile',
+  cashier: '/bills',
   lab: '/profile',
 }
 

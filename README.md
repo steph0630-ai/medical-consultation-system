@@ -78,6 +78,8 @@ docker compose down
 - `POST /api/v1/backoffice/prescriptions`
 - `GET /api/v1/backoffice/prescriptions`
 - `POST /api/v1/backoffice/prescriptions/{prescription_id}/dispense`
+- `GET /api/v1/backoffice/bills`
+- `POST /api/v1/backoffice/bills/{bill_id}/settle`
 
 首次启动后初始化原项目内置后台账号：
 

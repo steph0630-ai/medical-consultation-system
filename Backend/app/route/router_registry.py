@@ -62,6 +62,11 @@ BACKOFFICE_ROUTES = [
         f"{settings.API_V1_STR}/backoffice/prescriptions",
         ["backoffice-prescription"],
     ),
+    RouteConfig(
+        "app.api.backoffice.v1.bill",
+        f"{settings.API_V1_STR}/backoffice/bills",
+        ["backoffice-bill"],
+    ),
 ]
 COMMON_ROUTES = []
 
