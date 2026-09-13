@@ -44,6 +44,22 @@ class ServerError(APIException):
         super().__init__(code=1005, message=message, status_code=500, data=data)
 
 
+class ForeignKeyViolationError(APIException):
+    def __init__(
+        self,
+        message: str = 'It is linked to trips or other resources. Please mark it as "inactive" to hide it from users',
+        data: Any = None,
+        language: Optional[str] = None,
+    ):
+        super().__init__(
+            code=1006,
+            message=message,
+            status_code=400,
+            data=data,
+            language=language,
+        )
+
+
 class BudgetExceededError(APIException):
     def __init__(self, message: str = "Daily LLM token budget exceeded", data: Any = None, language: Optional[str] = None):
         super().__init__(code=1007, message=message, status_code=429, data=data, language=language)

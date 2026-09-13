@@ -131,6 +131,20 @@ docker compose exec backend python scripts/init_data.py
 
 超级管理员账号：`superadmin@test.com`，密码：`admin123`
 
+原项目资料中的药品数据需要时手动导入：
+
+```powershell
+docker compose exec backend python scripts/seed_drugs.py
+```
+
+AI Agent 评估需要数据库测试患者和有效模型密钥，手动执行：
+
+```powershell
+docker compose exec backend python scripts/eval_agents.py
+```
+
+科室和 RAG Markdown 文件仅作为手动导入资料，不会随系统启动自动写入数据库。
+
 启用报告 AI 解读前，复制 `Backend/.env.example` 为 `Backend/.env`，并填写：
 
 - `DASHSCOPE_API_KEY`
