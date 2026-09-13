@@ -9,6 +9,8 @@ cd Backend
 docker compose up -d --build
 ```
 
+该命令会同时启动后端、患者端、后台端、Celery Worker 和 Celery Beat。
+
 患者端：`http://localhost:3001`
 
 后台管理端：`http://localhost:3000`

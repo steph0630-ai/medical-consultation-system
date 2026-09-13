@@ -48,6 +48,8 @@ services:
     command: sh -c "alembic upgrade head && python main.py"
     ports:
       - "8001:8001"
+    volumes:
+      - ./logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
@@ -73,10 +75,37 @@ services:
       SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
       DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-dummy-api-key}
       DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-dummy-api-key}
-    command: celery -A app.core.celery_app worker --loglevel=info -Q celery
+    command: celery -A app.core.celery_app worker --loglevel=info -Q celery,scheduled_tasks
+    volumes:
+      - ./logs:/app/logs
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+
+  celery-beat:
+    build: .
+    environment:
+      ENV: production
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: app
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-dummy-api-key}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-dummy-api-key}
+    command: celery -A app.core.celery_app beat --loglevel=info
+    volumes:
+      - ./logs:/app/logs
+    depends_on:
       redis:
         condition: service_healthy
       backend:
