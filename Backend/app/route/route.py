@@ -20,6 +20,7 @@ from app.route.router_registry import (
 )
 from app.schemas.response import ApiResponse
 from app.services.common.redis import redis_client
+from app.services.common.thread_pool import thread_pool_service
 
 
 ALLOWED_ORIGINS = ["*"] if settings.ENV in ["development", "preview"] else ["*"]
@@ -44,6 +45,7 @@ async def lifespan(_: FastAPI):
         shutdown_logging()
     await close_db_engine()
     await redis_client.close()
+    thread_pool_service.shutdown()
     logger.info("Application shutting down")
 
 

@@ -136,6 +136,8 @@ docker compose exec backend python scripts/init_data.py
 - `DASHSCOPE_API_KEY`
 - `DEEPSEEK_API_KEY`
 
+邮件功能按需在 `Backend/.env` 中填写 SMTP 或 Brevo 配置；未使用邮件功能时可保留示例值。
+
 ## 本地开发患者端
 
 ```powershell
