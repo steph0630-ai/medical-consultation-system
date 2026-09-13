@@ -1,0 +1,33 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      ENV: development
+    volumes:
+      - ./app:/app/app
+      - ./logs:/app/logs
+      - ./scripts:/app/scripts
+      - ./migrations:/app/migrations
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      ENV: development
+    volumes:
+      - ./app:/app/app
+      - ./logs:/app/logs
+      - ./scripts:/app/scripts
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      ENV: development
+    volumes:
+      - ./app:/app/app
+      - ./logs:/app/logs

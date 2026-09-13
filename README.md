@@ -5,7 +5,7 @@
 ## 一键启动
 
 ```powershell
-cd Backend
+cd "D:\Users\86191\Desktop\medical-consultation-system"
 docker compose up -d --build
 ```
 
@@ -29,6 +29,22 @@ API 文档导出：`http://localhost:8001/api-docs/`
 ```powershell
 docker compose down
 ```
+
+开发环境启动：
+
+```powershell
+docker compose -f Backend/docker-compose.yml -f Backend/docker-compose.dev.yml up -d --build
+```
+
+可选监控与接口代理：
+
+```powershell
+docker compose --profile monitoring --profile proxy up -d --build
+```
+
+Flower：`http://localhost:5556`
+
+Nginx 接口代理：`http://localhost:8086`
 
 患者接口：
 

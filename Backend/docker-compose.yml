@@ -113,6 +113,28 @@ services:
     healthcheck:
       disable: true
 
+  flower:
+    build: .
+    profiles: ["monitoring"]
+    environment:
+      ENV: production
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SECRET_KEY: ${SECRET_KEY:-development-only-change-me}
+    command: celery -A app.core.celery_app flower --port=5555
+    ports:
+      - "${FLOWER_PORT:-5556}:5555"
+    depends_on:
+      redis:
+        condition: service_healthy
+      celery-worker:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5555')"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
   frontend:
     build: ../medical-client
     ports:
@@ -125,6 +147,17 @@ services:
     build: ../medical-admin
     ports:
       - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:alpine
+    profiles: ["proxy"]
+    ports:
+      - "${NGINX_HTTP_PORT:-8086}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       backend:
         condition: service_healthy
