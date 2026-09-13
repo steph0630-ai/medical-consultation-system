@@ -1,10 +1,15 @@
 from contextlib import asynccontextmanager
+import asyncio
+import logging
+import threading
 
 from fastapi import FastAPI, HTTPException, Request, status
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
+from app.core.log_config import is_master_process, setup_logging, shutdown_logging
+from app.common.log_consumer import consume_logs_forever
 from app.db.base import close_db_engine
 from app.exceptions.http_exceptions import APIException
 from app.route.router_registry import (
@@ -18,13 +23,28 @@ from app.services.common.redis import redis_client
 
 
 ALLOWED_ORIGINS = ["*"] if settings.ENV in ["development", "preview"] else ["*"]
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
+    setup_logging()
+    logger.info("Application starting up")
+    if is_master_process():
+        try:
+            def run_log_consumer():
+                asyncio.run(consume_logs_forever())
+
+            threading.Thread(target=run_log_consumer, daemon=True).start()
+            logger.info("[LogConsumer] Log consumer thread started (master process)")
+        except Exception as exc:
+            logger.warning(f"[LogConsumer] Failed to start log consumer thread: {exc}")
     yield
+    if is_master_process():
+        shutdown_logging()
     await close_db_engine()
     await redis_client.close()
+    logger.info("Application shutting down")
 
 
 def create_app() -> FastAPI:
@@ -45,7 +65,11 @@ def create_app() -> FastAPI:
     register_routes(app, get_common_routes())
 
     @app.exception_handler(APIException)
-    async def api_exception_handler(_: Request, exc: APIException):
+    async def api_exception_handler(request: Request, exc: APIException):
+        logger.error(
+            f"API Exception: {exc.status_code} - {exc.code} - {exc.detail}",
+            extra={"request": f"{request.method} {request.url}"},
+        )
         return ApiResponse.failed(
             message=exc.detail,
             body_code=exc.code,
@@ -54,7 +78,11 @@ def create_app() -> FastAPI:
         )
 
     @app.exception_handler(HTTPException)
-    async def http_exception_handler(_: Request, exc: HTTPException):
+    async def http_exception_handler(request: Request, exc: HTTPException):
+        logger.error(
+            f"HTTP Exception: {exc.status_code} - {exc.detail}",
+            extra={"request": f"{request.method} {request.url}"},
+        )
         return ApiResponse.failed(
             message=exc.detail,
             body_code=exc.status_code,
@@ -62,7 +90,11 @@ def create_app() -> FastAPI:
         )
 
     @app.exception_handler(RequestValidationError)
-    async def validation_exception_handler(_: Request, exc: RequestValidationError):
+    async def validation_exception_handler(request: Request, exc: RequestValidationError):
+        logger.warning(
+            f"Validation Error: {exc.errors()}",
+            extra={"request": f"{request.method} {request.url}"},
+        )
         return ApiResponse.failed(
             message="Validation error",
             body_code=1001,
@@ -71,7 +103,11 @@ def create_app() -> FastAPI:
         )
 
     @app.exception_handler(Exception)
-    async def global_exception_handler(_: Request, __: Exception):
+    async def global_exception_handler(request: Request, exc: Exception):
+        logger.exception(
+            f"Unhandled Exception: {exc}",
+            extra={"request": f"{request.method} {request.url}"},
+        )
         return ApiResponse.failed(
             message="Internal server error",
             body_code=1005,
